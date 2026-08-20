@@ -413,9 +413,6 @@ dataset-wide in Sections 5 and 6.
 - If asked about a hero, stat, or comparison not covered in this file,
   say the dataset doesn't have that level of detail rather than
   guessing.
-- Role and specialty fields may include a secondary value
-  (`_2` columns) for hybrid heroes — check both fields when answering
-  role-based questions.
 
 Name|Role|Lane|WinRate%|PickRate%|BanRate%
 
