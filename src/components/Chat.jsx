@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import './Chat.css';
 
 /* ─── Inline SVG Icons ─── */
@@ -175,7 +176,13 @@ export default function Chat() {
               className={`msg-row ${msg.role === 'user' ? 'user' : 'bot'}${msg.isError ? ' error' : ''}`}
             >
               {msg.role === 'assistant' && <BotAvatar />}
-              <div className="bubble">{msg.content}</div>
+              <div className="bubble">
+                {msg.role === 'assistant' ? (
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                ) : (
+                  msg.content
+                )}
+              </div>
             </div>
           ))}
 
