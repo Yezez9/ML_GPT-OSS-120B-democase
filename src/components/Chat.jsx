@@ -126,9 +126,8 @@ export default function Chat() {
     inputRef.current?.focus();
   }
 
-  // Load avatar URL from environment variables, or use a default bot SVG
-  const aiAvatarUrl = import.meta.env.VITE_AI_AVATAR_URL || 
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='padding:4px;'%3E%3Cpath d='M12 8V4H8'/%3E%3Crect x='8' y='8' width='8' height='12' rx='2'/%3E%3Cpath d='M10 12h4'/%3E%3Cpath d='M10 16h4'/%3E%3C/svg%3E";
+  // Replace /assets/avatar/angela-avatar.png with the final image — filename must stay the same.
+  const avatarPath = '/assets/avatar/angela-avatar.png';
 
   /* ─── Render ─── */
 
@@ -138,7 +137,7 @@ export default function Chat() {
       <nav className="navbar">
         <div className="nav-left">
           <img 
-            src={aiAvatarUrl} 
+            src={avatarPath} 
             alt="AI Assistant Avatar" 
             className="nav-avatar-img" 
           />
