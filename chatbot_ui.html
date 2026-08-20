@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MLBB Hero Insights</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ───────────── Reset & Base ───────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #0F1729;
+      --bg-light:  #1A2332;
+      --surface:   #1E293B;
+      --accent:    #3B82F6;
+      --accent-hover: #2563EB;
+      --text:      #F1F5F9;
+      --text-dim:  #94A3B8;
+      --text-muted:#64748B;
+      --border:    #334155;
+      --radius:    14px;
+      --radius-sm: 10px;
+    }
+
+    html { font-size: 15px; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    /* ───────────── Shell (mobile-width column) ───────────── */
+    .app-shell {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+      position: relative;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    /* ───────────── Header ───────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--bg-light);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .header-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), #6366F1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .header-logo svg { width: 18px; height: 18px; }
+
+    .header-text { flex: 1; min-width: 0; }
+
+    .header-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .header-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .header-badge {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(59,130,246,0.12);
+      padding: 3px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ───────────── Chat Area ───────────── */
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* scrollbar */
+    .chat-area::-webkit-scrollbar { width: 4px; }
+    .chat-area::-webkit-scrollbar-track { background: transparent; }
+    .chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* ── Message row ── */
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      max-width: 92%;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg-row.bot  { align-self: flex-start; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Avatar ── */
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar.bot-avatar {
+      background: linear-gradient(135deg, var(--accent), #6366F1);
+    }
+
+    .avatar.bot-avatar svg { width: 14px; height: 14px; }
+
+    /* ── Bubble ── */
+    .bubble {
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .msg-row.user .bubble {
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--radius) var(--radius) 4px var(--radius);
+    }
+
+    .msg-row.bot .bubble {
+      background: var(--surface);
+      color: var(--text);
+      border-radius: var(--radius) var(--radius) var(--radius) 4px;
+      border: 1px solid var(--border);
+    }
+
+    .bubble strong { font-weight: 600; color: #93C5FD; }
+    .msg-row.user .bubble strong { color: #fff; }
+
+    /* stat list inside bot bubble */
+    .stat-list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .stat-item {
+      background: rgba(255,255,255,0.04);
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .stat-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── Timestamp between groups ── */
+    .chat-ts {
+      text-align: center;
+      font-size: 0.66rem;
+      color: var(--text-muted);
+      margin: 8px 0 4px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ───────────── Suggested Chips ───────────── */
+    .chips-row {
+      display: flex;
+      gap: 8px;
+      padding: 8px 14px 4px;
+      overflow-x: auto;
+      flex-shrink: 0;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .chips-row::-webkit-scrollbar { display: none; }
+
+    .chip {
+      white-space: nowrap;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-light);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(59,130,246,0.08);
+    }
+
+    /* ───────────── Input Bar ───────────── */
+    .input-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px 16px;
+      flex-shrink: 0;
+      background: var(--bg-light);
+      border-top: 1px solid var(--border);
+    }
+
+    .input-bar input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      font-size: 0.85rem;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-bar input::placeholder { color: var(--text-muted); }
+
+    .input-bar input:focus { border-color: var(--accent); }
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .send-btn:hover { background: var(--accent-hover); }
+    .send-btn svg { width: 18px; height: 18px; }
+
+    /* ───────────── Footer ───────────── */
+    .footer {
+      text-align: center;
+      padding: 8px 14px 12px;
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      letter-spacing: 0.01em;
+    }
+
+    /* ───────────── Responsive tweak for wider screens ───────────── */
+    @media (min-width: 480px) {
+      .app-shell {
+        margin-top: 0;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ═══════ HEADER ═══════ -->
+  <div class="header">
+    <div class="header-logo">
+      <!-- Sword / shield icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+        <line x1="12" y1="22" x2="12" y2="15.5"/>
+        <line x1="22" y1="8.5" x2="12" y2="15.5"/>
+        <line x1="2"  y1="8.5" x2="12" y2="15.5"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <div class="header-title">MLBB Hero Insights</div>
+      <div class="header-sub">AI-powered hero statistics assistant</div>
+    </div>
+    <div class="header-badge">Data as of Aug 18, 2026</div>
+  </div>
+
+  <!-- ═══════ CHAT AREA ═══════ -->
+  <div class="chat-area" id="chatArea">
+
+    <div class="chat-ts">Today</div>
+
+    <!-- Exchange 1 -->
+    <div class="msg-row user">
+      <div class="bubble">Which hero has the best win rate?</div>
+    </div>
+
+    <div class="msg-row bot">
+      <div class="avatar bot-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8"/><rect x="8" y="8" width="8" height="12" rx="2"/><path d="M10 12h4"/><path d="M10 16h4"/>
+        </svg>
+      </div>
+      <div class="bubble">
+        Based on recent data, <strong>Marcel</strong> currently leads with a <strong>54.2%</strong> win rate, closely followed by <strong>Rafaela</strong> at <strong>53.8%</strong> in high-rank (Legend+) matches.
+      </div>
+    </div>
+
+    <!-- Exchange 2 -->
+    <div class="msg-row user">
+      <div class="bubble">What are the most banned heroes?</div>
+    </div>
+
+    <div class="msg-row bot">
+      <div class="avatar bot-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8"/><rect x="8" y="8" width="8" height="12" rx="2"/><path d="M10 12h4"/><path d="M10 16h4"/>
+        </svg>
+      </div>
+      <div class="bubble">
+        The top 3 most banned heroes in the current meta are:
+        <div class="stat-list">
+          <div class="stat-item"><span class="stat-dot"></span>Tigreal — <strong>72%</strong> ban rate</div>
+          <div class="stat-item"><span class="stat-dot"></span>Vexana — <strong>68%</strong> ban rate</div>
+          <div class="stat-item"><span class="stat-dot"></span>Nolan — <strong>65%</strong> ban rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exchange 3 -->
+    <div class="msg-row user">
+      <div class="bubble">What role is Chou?</div>
+    </div>
+
+    <div class="msg-row bot">
+      <div class="avatar bot-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8"/><rect x="8" y="8" width="8" height="12" rx="2"/><path d="M10 12h4"/><path d="M10 16h4"/>
+        </svg>
+      </div>
+      <div class="bubble">
+        <strong>Chou</strong> is a <strong>Fighter</strong> with the specialty of <strong>Charge/Crowd Control</strong>. He currently has a <strong>50.1%</strong> win rate and a <strong>12%</strong> ban rate.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════ SUGGESTED CHIPS ═══════ -->
+  <div class="chips-row">
+    <div class="chip" onclick="sendChip(this)">🏆 Top banned heroes</div>
+    <div class="chip" onclick="sendChip(this)">💛 Best support picks</div>
+    <div class="chip" onclick="sendChip(this)">⚔️ Compare two heroes</div>
+  </div>
+
+  <!-- ═══════ INPUT BAR ═══════ -->
+  <div class="input-bar">
+    <input type="text" id="msgInput" placeholder="Ask about a hero or stat..." autocomplete="off" />
+    <button class="send-btn" onclick="sendMessage()" aria-label="Send message">
+      <!-- Paper plane icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <div class="footer">
+    © 2026 MLBB Hero Insights · BulSU Data Science &amp; Analytics · Student Project Demo
+  </div>
+
+</div>
+
+<script>
+  const chatArea  = document.getElementById('chatArea');
+  const msgInput  = document.getElementById('msgInput');
+
+  /* Bot avatar SVG (reusable) */
+  const botAvatarHTML = `
+    <div class="avatar bot-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 8V4H8"/><rect x="8" y="8" width="8" height="12" rx="2"/><path d="M10 12h4"/><path d="M10 16h4"/>
+      </svg>
+    </div>`;
+
+  /* Send user message & generate a mock bot reply */
+  function sendMessage() {
+    const text = msgInput.value.trim();
+    if (!text) return;
+    appendMsg('user', text);
+    msgInput.value = '';
+
+    /* Simulate a short typing delay then reply */
+    setTimeout(() => {
+      appendMsg('bot', `I'd look that up for you! In a live version this would query the hero stats dataset. You asked: "<em>${text}</em>"`);
+    }, 600);
+  }
+
+  /* Clicking a chip sends it as a user message */
+  function sendChip(el) {
+    const raw = el.textContent.replace(/^[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}]\s*/u, '').trim();
+    msgInput.value = raw;
+    sendMessage();
+  }
+
+  /* Append a message bubble */
+  function appendMsg(role, html) {
+    const row = document.createElement('div');
+    row.className = `msg-row ${role}`;
+
+    if (role === 'bot') {
+      row.innerHTML = `${botAvatarHTML}<div class="bubble">${html}</div>`;
+    } else {
+      row.innerHTML = `<div class="bubble">${html}</div>`;
+    }
+
+    chatArea.appendChild(row);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  /* Enter key sends */
+  msgInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+</body>
+</html>
