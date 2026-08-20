@@ -41,8 +41,23 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Request body must include a non-empty "messages" array.' });
   }
 
-  // To prevent token limits, only send the last 6 messages of history
-  const recentMessages = messages.slice(-6);
+  // 1. Filter out internal error messages
+  const cleanMessages = messages.filter(m => !m.isError && !m.content.startsWith('⚠️'));
+
+  // 2. To prevent token limits, take the last 6 messages
+  let recentMessages = cleanMessages.slice(-6);
+
+  // 3. Groq (Llama models) throw 400 Bad Request if history starts with an 'assistant' message. 
+  // Ensure the first message after the system prompt is a 'user' message.
+  if (recentMessages.length > 0 && recentMessages[0].role === 'assistant') {
+    recentMessages.shift();
+  }
+
+  // 4. Strip non-standard properties (OpenAPI validator rejects unknown fields)
+  recentMessages = recentMessages.map(m => ({
+    role: m.role,
+    content: m.content
+  }));
 
   // Prepend system prompt
   const fullMessages = [
