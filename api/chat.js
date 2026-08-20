@@ -10,7 +10,12 @@ const MODEL = 'openai/gpt-oss-120b';
 // Dynamically load the system prompt from the markdown file
 let SYSTEM_PROMPT = '';
 try {
-  SYSTEM_PROMPT = fs.readFileSync(path.join(process.cwd(), 'mlbb_chatbot_context.md'), 'utf8');
+  const rawContext = fs.readFileSync(path.join(process.cwd(), 'mlbb_chatbot_context.md'), 'utf8');
+  // 413 error means the payload exceeds the AI model's token limit. 
+  // We cap the context to ~12000 characters (approx 3000 tokens) to ensure it fits.
+  SYSTEM_PROMPT = rawContext.length > 12000 
+    ? rawContext.slice(0, 12000) + '\n\n[...Context truncated due to AI token limits...]'
+    : rawContext;
 } catch (error) {
   console.error("Failed to load mlbb_chatbot_context.md:", error);
   // Fallback just in case
@@ -36,10 +41,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Request body must include a non-empty "messages" array.' });
   }
 
+  // To prevent token limits, only send the last 6 messages of history
+  const recentMessages = messages.slice(-6);
+
   // Prepend system prompt
   const fullMessages = [
     { role: 'system', content: SYSTEM_PROMPT },
-    ...messages,
+    ...recentMessages,
   ];
 
   try {
