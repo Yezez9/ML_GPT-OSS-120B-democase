@@ -81,28 +81,22 @@ export default function Chat() {
     setIsLoading(true);
 
     try {
-      // ──────────── TODO: REPLACE THIS BLOCK ────────────
-      // Call your API endpoint here. Example:
-      //
-      //   const res = await fetch('/api/chat', {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify({ messages: updatedMessages }),
-      //   });
-      //
-      //   if (!res.ok) {
-      //     const err = await res.json().catch(() => ({}));
-      //     throw new Error(err.error || `Server error (${res.status})`);
-      //   }
-      //
-      //   const data = await res.json();
-      //   const assistantMsg = { role: 'assistant', content: data.reply };
-      //
-      // For now, throw so the placeholder doesn't silently do nothing:
-      throw new Error(
-        'API not connected yet. Wire up /api/chat to enable responses.'
-      );
-      // ──────────── END TODO ────────────
+      // Call the serverless API endpoint
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: updatedMessages }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Server error (${res.status})`);
+      }
+
+      const data = await res.json();
+      const assistantMsg = { role: 'assistant', content: data.reply };
+      setMessages((prev) => [...prev, assistantMsg]);
+
 
     } catch (err) {
       // Show the error inline as an assistant message so the UI never crashes
