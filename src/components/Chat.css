@@ -536,3 +536,11 @@
     padding: 8px 12px 12px;
   }
 }
+
+@media (min-width: 768px) {
+  .chat-scroll,
+  .input-wrap {
+    width: 90vw;
+    max-width: 1280px;
+  }
+}
