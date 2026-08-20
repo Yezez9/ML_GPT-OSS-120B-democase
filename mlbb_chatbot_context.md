@@ -1,6 +1,6 @@
 # A.N.G.E.L.A. — Chatbot Persona & System Prompt
 
-**A.N.G.E.L.A.** stands for **Artificial Neural Generation Engine for Learning and Analytics**, named after the Mobile Legends hero **Angela**.
+**A.N.G.E.L.A.** stands for **Artificial Neural Generation Engine for Learning and Analytics**
 
 ---
 
@@ -221,7 +221,7 @@ flatter overall distribution.
 
 ---
 
-## 2. Role distribution (Hero_Role_1 — primary role)
+## 2. Role distribution
 
 | Role | # of Heroes | Avg Win Rate | Avg Ban Rate | Avg Pick Rate |
 |---|---|---|---|---|
@@ -248,7 +248,7 @@ secondary tag — reflecting hybrid heroes like Masha (Fighter/Tank).
 
 ---
 
-## 3. Lane distribution (Hero_Lane_1)
+## 3. Lane distribution
 
 | Lane | # of Heroes |
 |---|---|
@@ -410,149 +410,126 @@ dataset-wide in Sections 5 and 6.
 
 ## 10. Chatbot guardrails (for system prompt use)
 
-- This is a **single-day snapshot** (Aug 18, 2026) — do not present these
-  rates as long-term meta trends or predict future balance changes.
 - If asked about a hero, stat, or comparison not covered in this file,
   say the dataset doesn't have that level of detail rather than
   guessing.
-- Win rate reflects average performance across all players who picked
-  the hero that day — it is influenced by hero difficulty/skill ceiling,
-  not purely raw power (see Granger/Fanny note in Section 6).
 - Role and specialty fields may include a secondary value
   (`_2` columns) for hybrid heroes — check both fields when answering
   role-based questions.
 
-MLBB heroes(133,Aug18'26) Name|Role|Win/Pick/Ban%
-Marcel|Support|58/0/32
-Rafaela|Support|58/1/10
-Masha|Fighter|57/0/0
-Melissa|Marksman|56/1/9
-Gloo|Tank|55/1/49
-Hanzo|Assassin|55/1/11
-Khufra|Tank|55/0/2
-Lolita|Support|54/0/0
-Argus|Fighter|54/0/1
-Minotaur|Tank|54/1/5
-Floryn|Support|54/1/20
-Sun|Fighter|53/2/42
-Atlas|Tank|53/1/24
-Miya|Marksman|53/3/16
-Belerick|Tank|53/2/59
-Diggie|Support|53/0/5
-Hanabi|Marksman|53/3/11
-Estes|Support|53/1/38
-Lukas|Fighter|53/1/4
-Barats|Tank|53/1/2
-Ling|Assassin|53/1/5
-Benedetta|Assassin|52/0/1
-Eudora|Mage|52/2/49
-Valir|Mage|52/1/2
-Gord|Mage|52/1/2
-Popol and Kupa|Marksman|52/0/0
-Natalia|Assassin|52/0/2
-Minsitthar|Fighter|52/1/15
-Zhask|Mage|52/0/1
-Silvanna|Fighter|52/1/3
-Hirara|Assassin|52/1/52
-Kadita|Mage|52/1/6
-Yi Sun-shin|Assassin|52/2/14
-Irithel|Marksman|52/0/0
-Carmilla|Support|51/1/2
-Bane|Fighter|51/0/0
-Hilda|Fighter|51/1/4
-Cyclops|Mage|51/1/0
-Guinevere|Fighter|51/1/15
-Fredrinn|Fighter|51/1/4
-Kagura|Mage|51/1/1
-Edith|Tank|51/0/0
-Khaleed|Fighter|51/0/0
-Yve|Mage|51/0/0
-Zetian|Mage|51/2/9
-Terizla|Fighter|51/0/0
-Faramis|Support|51/0/0
-Paquito|Fighter|51/2/56
-Badang|Fighter|51/1/1
-Vale|Mage|51/1/0
-Aamon|Assassin|51/1/4
-Uranus|Tank|50/0/1
-Aulus|Fighter|50/0/0
-Alice|Tank|50/1/4
-Leomord|Fighter|50/0/1
-Akai|Tank|50/1/8
-Vexana|Mage|50/2/2
-Julian|Assassin|50/1/2
-Dyrroth|Fighter|50/2/2
-Natan|Marksman|50/0/0
-Saber|Assassin|50/1/29
-Odette|Mage|50/1/0
-Sora|Fighter|50/1/7
-Johnson|Tank|50/1/3
-Beatrix|Marksman|50/1/1
-Aldous|Fighter|50/0/1
-X.Borg|Fighter|50/1/3
-Cecilion|Mage|50/1/0
-Thamuz|Fighter|49/1/3
-Yu Zhong|Fighter|49/1/2
-Ruby|Fighter|49/0/1
-Alucard|Fighter|49/0/0
-Gusion|Assassin|49/1/7
-Moskov|Marksman|49/1/0
-Novaria|Mage|49/1/3
-Suyou|Assassin|49/1/2
-Angela|Support|49/2/11
-Lunox|Mage|49/0/0
-Roger|Fighter|49/0/0
-Lylia|Mage|49/1/1
-Obsidia|Marksman|49/1/1
-Nolan|Assassin|49/0/1
-Chip|Support|49/0/1
-Brody|Marksman|49/1/1
-Yin|Fighter|49/1/3
-Joy|Assassin|48/0/0
-Lapu-Lapu|Fighter|48/0/1
-Aurora|Mage|48/1/0
-Arlott|Fighter|48/0/1
-Chang'e|Mage|48/1/1
-Ixia|Marksman|48/1/1
-Clint|Marksman|48/1/1
-Esmeralda|Tank|48/1/3
-Phoveus|Fighter|48/0/1
-Helcurt|Assassin|48/1/20
-Xavier|Mage|48/1/0
-Selena|Assassin|48/1/4
-Harley|Assassin|48/1/12
-Bruno|Marksman|48/0/0
-Jawhead|Fighter|48/0/0
-Freya|Fighter|48/1/2
-Hylos|Tank|48/0/1
-Luo Yi|Mage|48/0/0
-Claude|Marksman|48/1/0
-Layla|Marksman|48/1/1
-Hayabusa|Assassin|48/1/3
-Zhuxin|Mage|48/0/1
-Grock|Tank|48/0/1
-Kimmy|Marksman|47/1/0
-Martis|Fighter|47/1/1
-Karrie|Marksman|47/1/2
-Balmond|Fighter|47/1/1
-Nana|Mage|47/2/5
-Cici|Fighter|47/0/1
-Pharsa|Mage|47/0/0
-Kaja|Support|47/1/49
-Zilong|Fighter|47/1/1
-Lesley|Marksman|47/2/14
-Baxia|Tank|47/0/0
-Wanwan|Marksman|47/0/0
-Harith|Mage|47/0/0
-Alpha|Fighter|46/1/1
-Chou|Fighter|46/1/4
-Tigreal|Tank|46/2/8
-Gatotkaca|Tank|46/1/1
-Karina|Assassin|46/1/2
-Valentina|Mage|45/0/0
-Mathilda|Support|45/0/0
-Lancelot|Assassin|43/1/1
-Kalea|Support|43/0/0
-Franco|Tank|43/1/5
-Fanny|Assassin|42/1/3
-Granger|Marksman|42/1/2
+Name|Role|Lane|WinRate%|PickRate%|BanRate%
+
+
+Floryn|Supp|Roam|53.9|1.09|19.62
+Sun|Figh|Exp /Jung|53.3|1.51|42.50
+Atlas|Tank|Roam|53.2|1.05|23.56
+Miya|Mark|Gold|53.2|3.34|16.45
+Belerick|Tank|Roam|53.2|1.56|59.37
+Diggie|Supp|Roam|53.2|0.21|5.19
+Hanabi|Mark|Gold|53.1|3.41|10.91
+Estes|Supp|Roam|53.0|0.63|37.59
+Lukas|Figh|Exp /Jung|52.9|0.55|3.90
+Barats|Tank/Figh|Jung|52.7|0.52|1.92
+Ling|Assa|Jung|52.6|0.98|4.56
+Benedetta|Assa/Figh|Exp |52.4|0.42|0.61
+Eudora|Mage|Mid |52.4|2.15|49.16
+Valir|Mage|Mid |52.4|0.95|2.27
+Gord|Mage|Mid |52.3|1.07|2.31
+Popol and Kupa|Mark|Jung/Gold|52.1|0.29|0.31
+Natalia|Assa|Jung/Roam|51.9|0.32|2.46
+Minsitthar|Figh|Exp /Roam|51.8|0.77|14.69
+Zhask|Mage|Mid |51.8|0.41|0.64
+Silvanna|Figh|Exp |51.8|1.17|2.51
+Hirara|Assa|Jung|51.7|0.55|51.53
+Kadita|Mage/Assa|Mid |51.6|0.87|5.62
+Yi Sun-shin|Assa/Mark|Jung|51.6|1.72|13.86
+Irithel|Mark|Gold|51.5|0.49|0.43
+Carmilla|Supp/Tank|Roam|51.5|0.77|1.80
+Bane|Figh/Mage|Jung/Exp |51.4|0.33|0.22
+Hilda|Figh/Tank|Roam/Exp |51.3|0.65|3.70
+Cyclops|Mage|Mid |51.2|0.69|0.34
+Guinevere|Figh|Exp |51.2|1.31|15.49
+Fredrinn|Figh/Tank|Jung|51.1|0.58|3.74
+Kagura|Mage|Mid |51.1|0.64|0.98
+Edith|Tank/Mark|Exp /Roam|51.1|0.22|0.12
+Khaleed|Figh|Roam/Exp |51.1|0.16|0.15
+Yve|Mage|Mid |51.0|0.06|0.05
+Zetian|Mage|Mid |50.9|1.61|9.40
+Terizla|Figh/Tank|Exp |50.9|0.39|0.30
+Faramis|Supp/Mage|Mid /Roam|50.8|0.09|0.36
+Paquito|Figh/Assa|Exp |50.7|1.72|55.50
+Badang|Figh|Roam/Exp |50.6|1.03|1.32
+Vale|Mage|Mid |50.6|0.62|0.36
+Aamon|Assa|Jung|50.5|0.78|4.25
+Uranus|Tank|Exp |50.5|0.43|0.71
+Aulus|Figh|Jung|50.4|0.23|0.35
+Alice|Tank/Mage|Exp /Jung|50.4|0.64|3.63
+Leomord|Figh|Jung|50.3|0.39|1.36
+Akai|Tank|Roam|50.3|0.55|8.29
+Vexana|Mage|Mid |50.1|1.89|1.94
+Julian|Assa/Figh|Jung/Exp |50.0|0.97|2.03
+Dyrroth|Figh|Exp /Jung|49.9|1.98|2.41
+Natan|Mark|Gold|49.9|0.30|0.16
+Saber|Assa|Jung/Roam|49.9|1.02|29.07
+Odette|Mage|Mid |49.8|0.56|0.36
+Sora|Figh/Assa|Exp |49.8|0.67|6.80
+Johnson|Tank/Supp|Roam|49.7|0.76|2.70
+Beatrix|Mark|Gold|49.7|0.75|0.82
+Aldous|Figh|Exp |49.7|0.39|0.54
+X.Borg|Figh|Exp |49.7|0.63|3.38
+Cecilion|Mage|Mid |49.6|0.63|0.22
+Thamuz|Figh|Exp |49.4|0.95|2.77
+Yu Zhong|Figh|Exp |49.3|0.68|1.65
+Ruby|Figh|Exp |49.3|0.41|0.61
+Alucard|Figh/Assa|Jung|49.2|0.49|0.47
+Gusion|Assa|Jung/Mid |49.2|1.42|6.93
+Moskov|Mark|Gold|49.2|1.04|0.38
+Novaria|Mage|Mid |49.1|1.32|3.43
+Suyou|Assa/Figh|Jung|49.0|0.88|1.81
+Angela|Supp|Roam|49.0|1.67|11.31
+Lunox|Mage|Mid |49.0|0.25|0.18
+Roger|Figh/Mark|Jung|48.9|0.31|0.13
+Lylia|Mage|Mid |48.9|0.51|0.62
+Obsidia|Mark|Gold|48.9|0.56|0.87
+Nolan|Assa|Jung|48.9|0.49|0.82
+Chip|Supp/Tank|Roam|48.8|0.06|0.64
+Brody|Mark|Gold|48.7|0.65|0.81
+Yin|Figh/Assa|Jung/Exp |48.5|0.57|2.57
+Joy|Assa|Jung|48.5|0.18|0.36
+Lapu-Lapu|Figh|Exp |48.5|0.43|0.96
+Aurora|Mage|Mid |48.4|0.58|0.47
+Arlott|Figh/Assa|Exp |48.4|0.41|0.51
+Chang'e|Mage|Mid |48.4|0.71|0.56
+Ixia|Mark|Gold|48.3|0.79|1.31
+Clint|Mark|Gold|48.3|0.64|0.63
+Esmeralda|Tank/Mage|Exp |48.3|0.96|3.29
+Phoveus|Figh|Exp |48.2|0.30|0.76
+Helcurt|Assa|Jung/Roam|48.2|0.78|19.83
+Xavier|Mage|Mid |48.2|0.60|0.17
+Selena|Assa/Mage|Mid /Roam|48.1|1.14|4.42
+Harley|Assa/Mage|Jung/Mid |48.0|1.00|12.41
+Bruno|Mark|Gold|48.0|0.16|0.12
+Jawhead|Figh|Roam/Exp |48.0|0.41|0.41
+Freya|Figh|Exp /Jung|47.9|0.61|2.17
+Hylos|Tank|Roam|47.8|0.32|0.71
+Luo Yi|Mage|Mid |47.7|0.16|0.08
+Claude|Mark|Gold|47.6|0.84|0.41
+Layla|Mark|Gold|47.6|1.15|1.32
+Hayabusa|Assa|Jung|47.6|0.71|2.66
+Zhuxin|Mage|Mid |47.5|0.16|0.97
+Grock|Tank/Figh|Roam|47.5|0.40|1.20
+Kimmy|Mark/Mage|Mid /Gold|47.5|0.53|0.39
+Martis|Figh|Jung/Exp |47.4|0.61|0.76
+Karrie|Mark|Gold|47.3|0.62|1.87
+Balmond|Figh|Jung/Exp |47.3|1.03|0.95
+Nana|Mage|Mid |47.3|1.55|4.71
+Cici|Figh|Exp |47.1|0.30|1.47
+Pharsa|Mage|Mid |47.0|0.43|0.32
+Kaja|Supp|Roam|47.0|0.64|48.62
+Zilong|Figh/Assa|Exp |47.0|0.81|0.62
+Lesley|Mark/Assa|Gold|46.9|1.86|13.67
+Baxia|Tank|Jung/Roam|46.9|0.08|0.21
+Wanwan|Mark|Gold|46.7|0.18|0.20
+Harith|Mage|Gold/Jung|46.7|0.19|0.17
+Alpha|Figh|Jung/Exp |46.2|1.00|0.70
+Chou|Figh|Exp /Roam|46.0|1.18|3.68
