@@ -190,21 +190,13 @@
 }
 
 /* ─── Avatar ─── */
-.bot-avatar {
+.bot-avatar-img {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  object-fit: cover;
   background: linear-gradient(135deg, var(--accent), #6366F1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
-  color: #fff;
-}
-
-.bot-avatar svg {
-  width: 15px;
-  height: 15px;
 }
 
 /* ─── Bubble ─── */

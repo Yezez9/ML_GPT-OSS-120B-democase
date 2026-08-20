@@ -3,6 +3,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import './Chat.css';
 
+const AVATAR_PATH = '/assets/avatar/angela-avatar.png';
+
 /* ─── Inline SVG Icons ─── */
 
 const ShieldIcon = () => (
@@ -15,14 +17,7 @@ const ShieldIcon = () => (
 );
 
 const BotAvatar = () => (
-  <div className="bot-avatar">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 8V4H8" />
-      <rect x="8" y="8" width="8" height="12" rx="2" />
-      <path d="M10 12h4" />
-      <path d="M10 16h4" />
-    </svg>
-  </div>
+  <img src={AVATAR_PATH} alt="AI Avatar" className="bot-avatar-img" />
 );
 
 const SendIcon = () => (
@@ -127,8 +122,7 @@ export default function Chat() {
   }
 
   // Replace /assets/avatar/angela-avatar.png with the final image — filename must stay the same.
-  const avatarPath = '/assets/avatar/angela-avatar.png';
-
+  
   /* ─── Render ─── */
 
   return (
@@ -137,7 +131,7 @@ export default function Chat() {
       <nav className="navbar">
         <div className="nav-left">
           <img 
-            src={avatarPath} 
+            src={AVATAR_PATH} 
             alt="AI Assistant Avatar" 
             className="nav-avatar-img" 
           />
