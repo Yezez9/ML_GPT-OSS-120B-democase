@@ -10,11 +10,15 @@ const MODEL = 'openai/gpt-oss-120b';
 // Dynamically load the system prompt from the markdown file
 let SYSTEM_PROMPT = '';
 try {
-  const rawContext = fs.readFileSync(path.join(process.cwd(), 'mlbb_chatbot_context.md'), 'utf8');
+  let rawContext = fs.readFileSync(path.join(process.cwd(), 'mlbb_chatbot_context.md'), 'utf8');
+  
+  // Compress whitespace and blank lines to fit more data into the token limit
+  rawContext = rawContext.replace(/ {2,}/g, ' ').replace(/\n{2,}/g, '\n');
+  
   // 413 error means the payload exceeds the AI model's token limit. 
-  // We cap the context to ~12000 characters (approx 3000 tokens) to ensure it fits.
-  SYSTEM_PROMPT = rawContext.length > 12000 
-    ? rawContext.slice(0, 12000) + '\n\n[...Context truncated due to AI token limits...]'
+  // We cap the context to ~14000 characters to ensure it fits, while minification ensures most data is retained.
+  SYSTEM_PROMPT = rawContext.length > 14000 
+    ? rawContext.slice(0, 14000) + '\n\n[...Context truncated due to AI token limits...]'
     : rawContext;
 } catch (error) {
   console.error("Failed to load mlbb_chatbot_context.md:", error);
@@ -44,8 +48,8 @@ export default async function handler(req, res) {
   // 1. Filter out internal error messages
   const cleanMessages = messages.filter(m => !m.isError && !m.content.startsWith('⚠️'));
 
-  // 2. To prevent token limits, take the last 6 messages
-  let recentMessages = cleanMessages.slice(-6);
+  // 2. To prevent token limits, take only the last 2 messages (1 question/answer pair)
+  let recentMessages = cleanMessages.slice(-2);
 
   // 3. Groq (Llama models) throw 400 Bad Request if history starts with an 'assistant' message. 
   // Ensure the first message after the system prompt is a 'user' message.
@@ -83,6 +87,13 @@ export default async function handler(req, res) {
     if (!groqRes.ok) {
       const errBody = await groqRes.text();
       console.error(`Groq API error ${groqRes.status}:`, errBody);
+      
+      if (groqRes.status === 429) {
+        return res.status(429).json({
+          error: `AI Rate Limit (429). The context file is very large and uses up your token quota quickly. Please wait 1 minute before asking another question!`,
+        });
+      }
+
       return res.status(502).json({
         error: `AI service error (${groqRes.status}). Please try again.`,
       });
