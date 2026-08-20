@@ -1,8 +1,8 @@
 // /api/chat.js — Vercel Serverless Function
 // Proxies chat requests to Groq API so the key never reaches the browser.
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const MODEL = 'openai/gpt-oss-120b';
