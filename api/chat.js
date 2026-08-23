@@ -63,9 +63,18 @@ export default async function handler(req, res) {
     content: m.content
   }));
 
-  // Prepend system prompt with strict fact-quoting instruction
+  // Prepend system prompt with strict fact-quoting rules
+  const STRICT_RULES = `
+
+STRICT DATA RULES — FOLLOW THESE WITHOUT EXCEPTION:
+
+6. Copy every number character-for-character from the CONTEXT section above. Never round, average, re-estimate, or "clean up" a figure — if the context says 9.76%, your answer must say 9.76%, not 9.8% or 10%.
+7. Never reorder, re-rank, or recalculate a list from the context. If the context lists heroes in a specific order (e.g. by win rate), preserve that exact order and those exact ranks in your answer.
+8. If a number, hero, or fact is not explicitly present in the CONTEXT section, say "That's not in my dataset" instead of estimating, guessing, or filling the gap with general knowledge about Mobile Legends.
+9. Do not add flavor text, nicknames, or commentary about a hero (e.g. calling a hero a "nightmare" or "powerhouse") unless that exact phrasing appears in the context above — stick to the data and keep commentary minimal and factual.`;
+
   const fullMessages = [
-    { role: 'system', content: SYSTEM_PROMPT + '\n\nCRITICAL INSTRUCTION: When answering questions, you MUST quote numbers, percentages, and rankings EXACTLY as they appear in the data above. Do NOT approximate, round, or guess any statistic. If a number is 9.76%, say 9.76%, not 4.8% or 10%. Copy the exact values from the context data.' },
+    { role: 'system', content: SYSTEM_PROMPT + STRICT_RULES },
     ...recentMessages,
   ];
 
