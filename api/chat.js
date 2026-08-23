@@ -68,10 +68,12 @@ export default async function handler(req, res) {
 
 STRICT DATA RULES — FOLLOW THESE WITHOUT EXCEPTION:
 
+4. Keep prose explanations short (2-4 sentences). This does NOT apply to requested lists/rankings — output those in full per rule 10.
 6. Copy every number character-for-character from the CONTEXT section above. Never round, average, re-estimate, or "clean up" a figure — if the context says 9.76%, your answer must say 9.76%, not 9.8% or 10%.
 7. Never reorder, re-rank, or recalculate a list from the context. If the context lists heroes in a specific order (e.g. by win rate), preserve that exact order and those exact ranks in your answer.
 8. If a number, hero, or fact is not explicitly present in the CONTEXT section, say "That's not in my dataset" instead of estimating, guessing, or filling the gap with general knowledge about Mobile Legends.
-9. Do not add flavor text, nicknames, or commentary about a hero (e.g. calling a hero a "nightmare" or "powerhouse") unless that exact phrasing appears in the context above — stick to the data and keep commentary minimal and factual.`;
+9. Do not add flavor text, nicknames, or commentary about a hero (e.g. calling a hero a "nightmare" or "powerhouse") unless that exact phrasing appears in the context above — stick to the data and keep commentary minimal and factual.
+10. When a user asks for a list, ranking, or "top N" of anything, output ALL items from the relevant context section, in the same order and count as the context — even if the list is long. Do not shorten, sample, or cap the list to make the answer feel more concise. The "keep answers short" rule applies to your explanatory prose around the list, not to the list itself — never drop list items to save space.`;
 
   const fullMessages = [
     { role: 'system', content: SYSTEM_PROMPT + STRICT_RULES },
