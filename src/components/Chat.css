@@ -137,21 +137,13 @@
   opacity: 0.85;
 }
 
-.empty-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--accent), #6366F1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
+.empty-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(59, 130, 246, 0.3);
   margin-bottom: 4px;
-}
-
-.empty-icon .nav-logo-icon {
-  width: 26px;
-  height: 26px;
 }
 
 .empty-title {

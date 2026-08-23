@@ -156,9 +156,7 @@ export default function Chat() {
           {/* Empty state */}
           {messages.length === 0 && !isLoading && (
             <div className="empty-state">
-              <div className="empty-icon">
-                <ShieldIcon />
-              </div>
+              <img src={AVATAR_PATH} alt="A.N.G.E.L.A" className="empty-avatar" />
               <h2 className="empty-title">A.N.G.E.L.A</h2>
               <p className="empty-sub">
                 Ask me anything about hero win rates, ban rates, roles, and
