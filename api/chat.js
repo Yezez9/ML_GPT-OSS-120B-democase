@@ -63,29 +63,11 @@ export default async function handler(req, res) {
     content: m.content
   }));
 
-  // Prepend system prompt with strict fact-quoting rules
-  const STRICT_RULES = `
-
-STRICT DATA RULES — FOLLOW THESE WITHOUT EXCEPTION:
-
-4. Keep prose explanations short (2-4 sentences). This does NOT apply to requested lists/rankings — output those in full per rule 10.
-6. Copy every number character-for-character from the CONTEXT section above. Never round, average, re-estimate, or "clean up" a figure — if the context says 9.76%, your answer must say 9.76%, not 9.8% or 10%.
-7. Never reorder, re-rank, or recalculate a list from the context. If the context lists heroes in a specific order (e.g. by win rate), preserve that exact order and those exact ranks in your answer.
-8. If a number, hero, or fact is not explicitly present in the CONTEXT section, say "That's not in my dataset" instead of estimating, guessing, or filling the gap with general knowledge about Mobile Legends.
-9. Do not add flavor text, nicknames, or commentary about a hero (e.g. calling a hero a "nightmare" or "powerhouse") unless that exact phrasing appears in the context above — stick to the data and keep commentary minimal and factual.
-10. When a user asks for a list, ranking, or "top N" of anything, output ALL items from the relevant context section, in the same order and count as the context — even if the list is long. Do not shorten, sample, or cap the list to make the answer feel more concise. The "keep answers short" rule applies to your explanatory prose around the list, not to the list itself — never drop list items to save space.`;
-
+  // Prepend system prompt
   const fullMessages = [
-    { role: 'system', content: SYSTEM_PROMPT + STRICT_RULES },
+    { role: 'system', content: SYSTEM_PROMPT },
     ...recentMessages,
   ];
-
-  // Debug: log the full payload so we can verify context is present and not truncated
-  console.log('[DEBUG] System prompt length:', SYSTEM_PROMPT.length);
-  console.log('[DEBUG] System prompt first 200 chars:', SYSTEM_PROMPT.substring(0, 200));
-  console.log('[DEBUG] System prompt last 200 chars:', SYSTEM_PROMPT.substring(SYSTEM_PROMPT.length - 200));
-  console.log('[DEBUG] Total messages count:', fullMessages.length);
-  console.log('[DEBUG] User messages:', recentMessages.map(m => ({ role: m.role, content: m.content.substring(0, 100) })));
 
   try {
     const groqRes = await fetch(GROQ_URL, {
@@ -97,7 +79,7 @@ STRICT DATA RULES — FOLLOW THESE WITHOUT EXCEPTION:
       body: JSON.stringify({
         model: MODEL,
         messages: fullMessages,
-        temperature: 0.1,
+        temperature: 0.6,
         max_tokens: 1024,
       }),
     });
