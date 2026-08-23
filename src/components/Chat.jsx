@@ -135,7 +135,7 @@ export default function Chat() {
             alt="AI Assistant Avatar" 
             className="nav-avatar-img" 
           />
-          <span className="nav-title">MLBB Hero Insights</span>
+          <span className="nav-title">A.N.G.E.L.A</span>
         </div>
 
         <div className="nav-center">
@@ -161,7 +161,7 @@ export default function Chat() {
               <div className="empty-icon">
                 <ShieldIcon />
               </div>
-              <h2 className="empty-title">MLBB Hero Insights</h2>
+              <h2 className="empty-title">A.N.G.E.L.A</h2>
               <p className="empty-sub">
                 Ask me anything about hero win rates, ban rates, roles, and
                 specialties. Powered by data from August 18, 2026.
@@ -241,7 +241,7 @@ export default function Chat() {
 
       {/* ═══ FOOTER ═══ */}
       <footer className="footer">
-        © 2026 MLBB Hero Insights. Professional Analytics for Legend &amp; Mythic Tiers.
+        © 2026 A.N.G.E.L.A. Professional Analytics for Legend &amp; Mythic Tiers.
       </footer>
     </div>
   );
