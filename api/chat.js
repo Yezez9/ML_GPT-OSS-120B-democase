@@ -63,11 +63,18 @@ export default async function handler(req, res) {
     content: m.content
   }));
 
-  // Prepend system prompt
+  // Prepend system prompt with strict fact-quoting instruction
   const fullMessages = [
-    { role: 'system', content: SYSTEM_PROMPT },
+    { role: 'system', content: SYSTEM_PROMPT + '\n\nCRITICAL INSTRUCTION: When answering questions, you MUST quote numbers, percentages, and rankings EXACTLY as they appear in the data above. Do NOT approximate, round, or guess any statistic. If a number is 9.76%, say 9.76%, not 4.8% or 10%. Copy the exact values from the context data.' },
     ...recentMessages,
   ];
+
+  // Debug: log the full payload so we can verify context is present and not truncated
+  console.log('[DEBUG] System prompt length:', SYSTEM_PROMPT.length);
+  console.log('[DEBUG] System prompt first 200 chars:', SYSTEM_PROMPT.substring(0, 200));
+  console.log('[DEBUG] System prompt last 200 chars:', SYSTEM_PROMPT.substring(SYSTEM_PROMPT.length - 200));
+  console.log('[DEBUG] Total messages count:', fullMessages.length);
+  console.log('[DEBUG] User messages:', recentMessages.map(m => ({ role: m.role, content: m.content.substring(0, 100) })));
 
   try {
     const groqRes = await fetch(GROQ_URL, {
@@ -79,7 +86,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: MODEL,
         messages: fullMessages,
-        temperature: 0.6,
+        temperature: 0.1,
         max_tokens: 1024,
       }),
     });
