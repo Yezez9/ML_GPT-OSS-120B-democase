@@ -140,8 +140,6 @@ export default function Chat() {
 
         <div className="nav-center">
           <a href="#" className="nav-link active">Chat</a>
-          <a href="#" className="nav-link">Metas</a>
-          <a href="#" className="nav-link">Heroes</a>
         </div>
 
         <div className="nav-right">
