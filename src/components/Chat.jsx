@@ -160,7 +160,7 @@ export default function Chat() {
               <h2 className="empty-title">A.N.G.E.L.A</h2>
               <p className="empty-sub">
                 Ask me anything about hero win rates, ban rates, roles, and
-                specialties. Powered by data from August 18, 2026.
+                specialties. Powered by data from August 18, 2026. Produced by Chelsea, Janice and Lance
               </p>
             </div>
           )}
@@ -237,7 +237,7 @@ export default function Chat() {
 
       {/* ═══ FOOTER ═══ */}
       <footer className="footer">
-        © 2026 A.N.G.E.L.A. Professional Analytics for Legend &amp; Mythic Tiers.
+        © 2026 A.N.G.E.L.A. - Artificial Neural Generation Engine for Learning and Analytics. For demo purposes only!
       </footer>
     </div>
   );
