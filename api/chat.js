@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const MODEL = 'openai/gpt-oss-120b';
+const MODEL = 'qwen/qwen3.8-27b';
 
 // Dynamically load the system prompt from the markdown file
 let SYSTEM_PROMPT = '';
@@ -79,10 +79,11 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: MODEL,
         messages: fullMessages,
-        temperature: 1,
+        temperature: 0.6,
         max_completion_tokens: 2048,
         top_p: 1,
         stop: null,
+        stream: true,
       }),
     });
 
@@ -92,7 +93,7 @@ export default async function handler(req, res) {
       
       if (groqRes.status === 429) {
         return res.status(429).json({
-          error: `AI Rate Limit (429). The context file is very large and uses up your token quota quickly. Please wait 1 minute before asking another question!`,
+          error: `AI Rate Limit (429). Please wait 1 minute before asking another question!`,
         });
       }
 
@@ -101,10 +102,44 @@ export default async function handler(req, res) {
       });
     }
 
-    const data = await groqRes.json();
-    const reply = data.choices?.[0]?.message?.content || 'No response generated.';
+    // Stream SSE back to the client
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
 
-    return res.status(200).json({ reply });
+    const reader = groqRes.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop(); // keep incomplete line in buffer
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+        const payload = trimmed.slice(6);
+        if (payload === '[DONE]') {
+          res.write('data: [DONE]\n\n');
+          break;
+        }
+        try {
+          const json = JSON.parse(payload);
+          const token = json.choices?.[0]?.delta?.content;
+          if (token) {
+            res.write(`data: ${JSON.stringify({ token })}\n\n`);
+          }
+        } catch (e) {
+          // skip malformed chunks
+        }
+      }
+    }
+
+    res.end();
   } catch (err) {
     console.error('Failed to reach Groq API:', err);
     return res.status(502).json({ error: 'Could not connect to the AI service. Please try again later.' });

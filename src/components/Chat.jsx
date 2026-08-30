@@ -78,7 +78,7 @@ export default function Chat() {
     setIsLoading(true);
 
     try {
-      // Call the serverless API endpoint
+      // Call the serverless API endpoint (streaming)
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -90,10 +90,41 @@ export default function Chat() {
         throw new Error(errData.error || `Server error (${res.status})`);
       }
 
-      const data = await res.json();
-      const assistantMsg = { role: 'assistant', content: data.reply };
-      setMessages((prev) => [...prev, assistantMsg]);
+      // Add an empty assistant message that we'll fill token-by-token
+      setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop(); // keep incomplete line
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith('data: ')) continue;
+          const payload = trimmed.slice(6);
+          if (payload === '[DONE]') break;
+          try {
+            const { token } = JSON.parse(payload);
+            if (token) {
+              setMessages((prev) => {
+                const updated = [...prev];
+                const last = updated[updated.length - 1];
+                updated[updated.length - 1] = { ...last, content: last.content + token };
+                return updated;
+              });
+            }
+          } catch (e) {
+            // skip malformed chunks
+          }
+        }
+      }
 
     } catch (err) {
       // Show the error inline as an assistant message so the UI never crashes
