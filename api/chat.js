@@ -82,6 +82,7 @@ export default async function handler(req, res) {
         temperature: 0.6,
         max_completion_tokens: 2048,
         top_p: 1,
+        reasoning_effort: 'medium',
         stop: null,
         stream: true,
       }),
