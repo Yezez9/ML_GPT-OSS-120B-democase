@@ -407,9 +407,3 @@ comparison chart — meaning most of the highest-win-rate heroes are
 dataset-wide in Sections 5 and 6.
 
 ---
-
-## 10. Chatbot guardrails (for system prompt use)
-
-- If asked about a hero, stat, or comparison not covered in this file,
-  say the dataset doesn't have that level of detail rather than
-  guessing.
